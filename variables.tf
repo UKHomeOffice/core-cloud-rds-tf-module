@@ -3,6 +3,7 @@ variable "instances" {
   type = map(object({
     allowed_cidr_blocks         = optional(list(string), [])
     allocated_storage           = number
+    auto_minor_version_upgrade  = bool
     backup_retention_period     = number
     backup_window               = string
     database_name               = string
@@ -36,6 +37,18 @@ variable "multi_az" {
   description = "Determines whether RDS instance uses multi-az"
   type        = bool
   default     = false
+}
+
+variable "auto_minor_version_upgrade" {
+  description = "Indicates that minor engine upgrades will be applied automatically to the RDSÅ instance during the maintenance window."
+  type        = bool
+  default     = true
+  nullable    = false
+
+  validation {
+    condition     = contains(["true"], var.auto_minor_version_upgrade)
+    error_message = "auto_minor_version_upgrade must be true."
+  }
 }
 
 variable "storage_encrypted" {
