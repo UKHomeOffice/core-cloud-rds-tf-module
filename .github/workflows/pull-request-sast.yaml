@@ -1,0 +1,59 @@
+name: Validate Terraform with Trivy, Checkov and Sonarqube
+
+on:
+  workflow_call:
+    secrets:
+      sonar_token:
+        required: true
+      sonar_host_url:
+        required: true
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+  actions: read
+  security-events: write
+
+jobs:
+  RunTerraformValidation:
+    name: Run Terraform SAST
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone the Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ~1.7.0
+
+      - name: terraform init
+        run: terraform init
+
+      - name: terraform validate
+        run: terraform validate
+      
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Sonarqube Scan
+        uses: UKHomeOffice/core-cloud-workflow-sonarqube-scan/.github/workflows/sonarqube-scan.yaml@1.1.1
+        secrets:
+          sonar_token: ${{ secrets.sonar_token }}
+          sonar_host_url: ${{ secrets.sonar_host_url }}
+
+      - name: Checkov Scan
+        uses: UKHomeOffice/core-cloud-workflow-checkov-sast-scan/.github/workflows/checkov-scan-base.yaml@1.5.0
+
+# Uncomment once tests have been written
+#      - name: Terraform tests
+#        run : terraform test
+#        env:
+          ## Pass in any environment variables needed for the tests to run as expected
