@@ -69,12 +69,6 @@ variable "manage_master_user_password" {
   default     = false
 }
 
-#variable "secret_name" {
-#  description = "Name of the secret in AWS Secrets Manager that contains the RDS password"
-#  type        = string
-#  default     = null
-#}
-
 variable "kms_key_arn" {
   description = "Optional KMS key ARN to encrypt the RDS and Secrets Manager secrets"
   type        = string
@@ -107,8 +101,9 @@ variable "tags" {
     owner-business   = string
     budget-holder    = string
     hosting-platform = string
+    source-repo      = string
   })
-  description = "The following tags must be applied to all resources: cost-centre, account-code, portfolio-id, project-id, service-id, environment-type, owner-business, budget-holder and hosting-platform"
+  description = "The following tags must be applied to all resources: cost-centre, account-code, portfolio-id, project-id, service-id, environment-type, owner-business, budget-holder, hosting-platform and source-repo"
   nullable    = false
 }
 
