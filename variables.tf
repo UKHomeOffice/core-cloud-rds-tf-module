@@ -44,11 +44,6 @@ variable "auto_minor_version_upgrade" {
   type        = bool
   default     = true
   nullable    = false
-
-  validation {
-    condition     = contains(["false"], var.auto_minor_version_upgrade)
-    error_message = "auto_minor_version_upgrade must be true."
-  }
 }
 
 variable "storage_encrypted" {
@@ -56,11 +51,12 @@ variable "storage_encrypted" {
   type        = bool
   default     = true
   nullable    = false
+}
 
-  validation {
-    condition     = contains(["false"], var.storage_encrypted)
-    error_message = "storage_encrypted must be true."
-  }
+variable "secret_name" {
+  description = "Name of the secret in AWS Secrets Manager that contains the RDS password"
+  type        = string
+  default     = null
 }
 
 variable "manage_master_user_password" {
