@@ -46,7 +46,7 @@ variable "auto_minor_version_upgrade" {
   nullable    = false
 
   validation {
-    condition     = contains(["true"], var.auto_minor_version_upgrade)
+    condition     = contains(["false"], var.auto_minor_version_upgrade)
     error_message = "auto_minor_version_upgrade must be true."
   }
 }
@@ -58,7 +58,7 @@ variable "storage_encrypted" {
   nullable    = false
 
   validation {
-    condition     = contains(["true"], var.storage_encrypted)
+    condition     = contains(["false"], var.storage_encrypted)
     error_message = "storage_encrypted must be true."
   }
 }
@@ -100,10 +100,9 @@ variable "tags" {
     environment-type = string
     owner-business   = string
     budget-holder    = string
-    hosting-platform = string
     source-repo      = string
   })
-  description = "The following tags must be applied to all resources: cost-centre, account-code, portfolio-id, project-id, service-id, environment-type, owner-business, budget-holder, hosting-platform and source-repo"
+  description = "The following tags must be applied to all resources: cost-centre, account-code, portfolio-id, project-id, service-id, environment-type, owner-business, budget-holder and source-repo"
   nullable    = false
 }
 
